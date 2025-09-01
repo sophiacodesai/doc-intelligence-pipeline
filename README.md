@@ -112,4 +112,3 @@ GPT-based Information Extraction
 
 Modern API Development
 
-Let me know, if you also want a short project blurb for your GitHub description or your Malt/Upwork portfolio!
