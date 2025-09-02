@@ -39,12 +39,9 @@ This FastAPI-based backend provides the following REST endpoints:
        └────────────▶ Direct parsing via Document Intelligence (optional)
 ```
 
----
-
 ## Project Structure
 
 doc-intelligence-pipeline/
-│
 ├── app/
 │   ├── main.py         # FastAPI entrypoint
 │   ├── docint.py       # Azure Document Intelligence logic
@@ -52,9 +49,13 @@ doc-intelligence-pipeline/
 │   ├── llm.py          # GPT-based structured extraction
 │   └── models.py       # Pydantic data models
 │
+├── tests/
+│   └── test_endpoints.py   # Endpoint tests
+│
 ├── .env                # Local environment variables
 ├── requirements.txt    # Dependencies
 └── README.md           # Project documentation
+
 
 ## Setup
 
