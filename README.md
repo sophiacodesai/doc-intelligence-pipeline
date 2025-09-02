@@ -1,114 +1,90 @@
-🧾 Doc Intelligence Pipeline (FastAPI)
+# Document Intelligence Pipeline
 
-This project showcases two flexible approaches for document information extraction using Azure services and LLMs – ideal for real-world OCR, invoice parsing, or paystub extraction use cases.
+This repository demonstrates two distinct approaches for extracting structured information from documents:
 
-It highlights the trade-offs between specialized prebuilt models and a generalized OCR + LLM pipeline.
+1. **Structured extraction using Azure Document Intelligence (e.g., invoices)**
+2. **OCR-based text extraction with downstream LLM processing (GPT)**
 
-✨ Features
+---
 
-FastAPI backend with three POST endpoints:
+## Features
 
-/extract/invoice → Structured extraction via Azure Document Intelligence prebuilt-invoice
+- Invoice parsing using Azure's prebuilt model (`prebuilt-invoice`)
+- Pay stub extraction (optional, `prebuilt-payStub.us`)
+- OCR extraction from scanned or unstructured documents
+- LLM-based parsing and structuring via Azure OpenAI
 
-/extract/paystub → Optional paystub extraction via prebuilt-payStub.us
+---
 
-/extract/ocr-llm → Generalized pipeline: OCR layout + GPT-4o postprocessing
+## API Overview
 
-Modular architecture:
+This FastAPI-based backend provides the following REST endpoints:
 
-docint.py → Azure Document Intelligence extraction
+| Endpoint                 | Description                                     |
+|--------------------------|-------------------------------------------------|
+| `GET /health`            | Health check                                   |
+| `POST /extract/invoice`  | Extract structured invoice data                |
+| `POST /extract/paystub`  | Extract data from US pay stubs (optional)      |
+| `POST /extract/ocr-llm`  | Extract via OCR + GPT (free-text instructions) |
 
-ocr.py → Layout-based OCR using Azure DI prebuilt-layout
+---
 
-llm.py → GPT-based correction or structured field extraction
+## Example Architecture
 
-models.py → Pydantic schemas (optional for input/output)
+```text
+┌───────────────┐       ┌────────────┐       ┌───────────────┐
+│   PDF Upload  │ ───▶  │   OCR      │ ───▶  │ GPT Extraction│
+└───────────────┘       └────────────┘       └───────────────┘
+       │                                       ▲
+       └────────────▶ Direct parsing via Document Intelligence (optional)
 
-Environment-based configuration using .env
+---
 
-⚙️ Use Cases
+## Project Structure
 
-Automated invoice or pay stub field extraction
+doc-intelligence-pipeline/
+│
+├── app/
+│   ├── main.py         # FastAPI entrypoint
+│   ├── docint.py       # Azure Document Intelligence logic
+│   ├── ocr.py          # OCR via layout model
+│   ├── llm.py          # GPT-based structured extraction
+│   └── models.py       # Pydantic data models
+│
+├── .env                # Local environment variables
+├── requirements.txt    # Dependencies
+└── README.md           # Project documentation
 
-OCR + GPT-4o pipeline for arbitrary documents with fuzzy layout
+## Setup
 
-Playground for structured LLM output, e.g. JSON schema extraction
+Clone the repo and install dependencies (using uv):
 
-📦 Installation
-Requirements
-
-Python 3.10+
-
-Azure resources:
-
-✅ Document Intelligence
- (endpoint + key)
-
-✅ Azure OpenAI
- (endpoint + key)
-
-Setup
-# Clone the repo
-git clone https://github.com/your-username/doc-intelligence-pipeline.git
+```bash
+git clone https://github.com/sophiacodesai/doc-intelligence-pipeline.git
 cd doc-intelligence-pipeline
+uv venv
+source .venv/bin/activate   # On Windows: .venv\Scripts\activate
+uv pip install -r requirements.txt
 
-# Create virtual environment
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+## Usage
 
-# Install dependencies
-pip install -U pip
-pip install -r requirements.txt
+Add your Azure credentials to a .env file:
 
-.env Example
-# .env
-AZURE_DOCINT_KEY=your_document_intelligence_key
-AZURE_DOCINT_ENDPOINT=https://your-resource.cognitiveservices.azure.com/
+AZURE_DOCINT_KEY=...
+AZURE_DOCINT_ENDPOINT=...
+AZURE_OPENAI_API_KEY=...
+AZURE_OPENAI_ENDPOINT=...
 
-AZURE_OPENAI_API_KEY=your_openai_key
-AZURE_OPENAI_ENDPOINT=https://your-openai-resource.openai.azure.com/
-
-🚀 Run Locally
+Start the API:
 uvicorn app.main:app --reload
+Open the interactive docs at: http://localhost:8000/docs
 
+---
 
-Access the interactive Swagger UI at http://localhost:8000/docs
+## Why This Project?
 
-🧠 Models Used
-Component	Model	Purpose
-Azure DI	prebuilt-invoice	Invoice field extraction
-Azure DI	prebuilt-payStub.us	(Optional) Paystub fields
-Azure DI	prebuilt-layout	General-purpose OCR
-Azure OpenAI	gpt-4o	Correction & JSON extraction
-🛠 Example Extensions
+This repository showcases how to bridge traditional document models with GPT-based flexibility, ideal for:
 
-Fine-tune your own DI custom model
-
-Integrate a document database (e.g. Cosmos DB, Supabase)
-
-Add file upload via Streamlit or React frontend
-
-Use LangChain or Guardrails for LLM output validation
-
-💡 Why This Matters
-
-This project demonstrates your ability to:
-
-Work with enterprise-grade Azure APIs (OCR, OpenAI)
-
-Build clean, production-style Python APIs with FastAPI
-
-Handle real-world documents, not just idealized samples
-
-Use GPT models for practical, structured output (not just chat)
-
-Perfect for showcasing your skills in:
-
-AI Engineering
-
-Document Automation
-
-GPT-based Information Extraction
-
-Modern API Development
-
+- Automating invoice or payslip parsing
+- Handling OCR-based document flows
+- Comparing rule-based vs. generative approaches

@@ -1,4 +1,3 @@
-# app/main.py
 from fastapi import FastAPI, UploadFile, File, HTTPException, Query
 from fastapi.responses import JSONResponse
 import traceback
