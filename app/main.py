@@ -3,8 +3,8 @@ from fastapi.responses import JSONResponse
 import traceback
 
 from app.docint import analyze_invoice_from_bytes
-# Optional: Pay Stub (falls du die Funktion gebaut hast)
-from app.docint import analyze_paystub_from_bytes  # kannst du löschen, falls nicht genutzt
+# Optional: Pay Stub, aber eher weg
+from app.docint import analyze_paystub_from_bytes  # eher löschen
 
 # OCR+LLM
 from app.ocr import extract_text_from_bytes
@@ -26,13 +26,13 @@ async def extract_invoice(file: UploadFile = File(...)):
     data = await file.read()
     try:
         result = analyze_invoice_from_bytes(data)
-        # du gibst fürs UI nur das „extracted“ zurück; bei Debugbedarf kannst du auch result["raw"] mitsenden
+        # gebe fürs UI nur das „extracted“ zurück; bei Debugbedarf kann auch result["raw"] mitsenden
         return JSONResponse(content=result["extracted"])
     except Exception as e:
         tb = traceback.format_exc()
         raise HTTPException(status_code=500, detail=f"{e}\n{tb}")
 
-# Optional – falls du Pay-Stub im Portfolio zeigen willst:
+# Optional, falls du Pay-Stub, aber eher weg:
 @app.post("/extract/paystub")
 async def extract_paystub(file: UploadFile = File(...)):
     if file.content_type != "application/pdf":
@@ -63,7 +63,7 @@ async def extract_ocr_llm(
         ocr = extract_text_from_bytes(data, markdown=False, high_res=True)
         text = ocr.get("content") or ""
         llm = structured_extract(text, task=task, schema_hint=None)
-        # Für Transparenz kannst du die Anzahl Zeichen ausgeben
+        # Für Transparenz kannst man die Anzahl Zeichen ausgeben
         return JSONResponse(content={
             "ocr": {"length": len(text)},
             "extracted": llm

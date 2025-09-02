@@ -1,5 +1,3 @@
-# streamlit_app.py
-
 import streamlit as st
 import requests
 from PIL import Image
@@ -24,7 +22,7 @@ mode = st.radio(
     horizontal=True
 )
 
-# POST-Anfrage an dein FastAPI-Backend
+# POST-Anfrage an FastAPI-Backend
 def request_prebuilt_invoice(file):
     url = "http://127.0.0.1:8000/extract/invoice"
     return requests.post(url, files={"file": file})
