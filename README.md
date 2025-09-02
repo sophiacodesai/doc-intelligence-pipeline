@@ -33,7 +33,7 @@ This FastAPI-based backend provides the following REST endpoints:
 
 ```text
 ┌───────────────┐       ┌────────────┐       ┌───────────────┐
-│   PDF Upload  │ ───▶  │   OCR      │ ───▶  │ GPT Extraction│
+│   PDF Upload  │ ───▶ │   OCR      │ ───▶  │ GPT Extraction│
 └───────────────┘       └────────────┘       └───────────────┘
        │                                       ▲
        └────────────▶ Direct parsing via Document Intelligence (optional)
