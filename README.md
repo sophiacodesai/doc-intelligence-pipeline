@@ -39,8 +39,11 @@ This FastAPI-based backend provides the following REST endpoints:
        └────────────▶ Direct parsing via Document Intelligence (optional)
 ```
 
+---
+
 ## Project Structure
 
+```bash
 doc-intelligence-pipeline/
 ├── app/
 │   ├── main.py         # FastAPI entrypoint
@@ -55,7 +58,9 @@ doc-intelligence-pipeline/
 ├── .env                # Local environment variables
 ├── requirements.txt    # Dependencies
 └── README.md           # Project documentation
+```
 
+---
 
 ## Setup
 
@@ -67,6 +72,9 @@ cd doc-intelligence-pipeline
 uv venv
 source .venv/bin/activate   # On Windows: .venv\Scripts\activate
 uv pip install -r requirements.txt
+```
+
+---
 
 ## Usage
 
