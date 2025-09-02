@@ -37,6 +37,7 @@ This FastAPI-based backend provides the following REST endpoints:
 └───────────────┘       └────────────┘       └───────────────┘
        │                                       ▲
        └────────────▶ Direct parsing via Document Intelligence (optional)
+```
 
 ---
 
