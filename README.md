@@ -35,7 +35,7 @@ This FastAPI-based backend provides the following REST endpoints:
 ┌───────────────┐       ┌────────────┐       ┌───────────────┐
 │   PDF Upload  │ ───▶ │   OCR      │ ───▶  │ GPT Extraction│
 └───────────────┘       └────────────┘       └───────────────┘
-       │                                       ▲
+       │                                             ▲
        └────────────▶ Direct parsing via Document Intelligence (optional)
 ```
 
@@ -79,15 +79,17 @@ uv pip install -r requirements.txt
 ## Usage
 
 Add your Azure credentials to a .env file:
-
+```bash
 AZURE_DOCINT_KEY=...
 AZURE_DOCINT_ENDPOINT=...
 AZURE_OPENAI_API_KEY=...
 AZURE_OPENAI_ENDPOINT=...
-
+```
 Start the API:
+```bash
 uvicorn app.main:app --reload
 Open the interactive docs at: http://localhost:8000/docs
+```
 
 ---
 
