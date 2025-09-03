@@ -1,15 +1,15 @@
 import os
 from openai import AzureOpenAI
 
-openai_api_key = os.getenv("AZURE_OPENAI_API_KEY")
+openai_key = os.getenv("AZURE_OPENAI_API_KEY")
 openai_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
 
-if not openai_api_key or not openai_endpoint:
+if not openai_key or not openai_endpoint:
     raise RuntimeError("Bitte AZURE_OPENAI_API_KEY und AZURE_OPENAI_ENDPOINT in .env setzen.")
 
 oai_client = AzureOpenAI(
     api_version="2024-06-01",
-    api_key=openai_api_key,
+    api_key=openai_key,
     azure_endpoint=openai_endpoint,
 )
 
