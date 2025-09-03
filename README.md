@@ -1,18 +1,37 @@
 # Document Intelligence Pipeline
 
-This repository demonstrates two distinct approaches for extracting structured information from documents:
+This repository compares two intelligent approaches for parsing documents:
 
-1. **Structured extraction using Azure Document Intelligence (e.g., invoices)**
-2. **OCR-based text extraction with downstream LLM processing (GPT)**
+1. **Azure Document Intelligence – prebuilt structured models**  
+   → e.g. invoice extraction using `prebuilt-invoice`
+2. **OCR-based layout parsing with GPT post-processing**  
+   → e.g. LLM extracting fields from scanned/unstructured PDFs
+
+---
+
+## Why This Project?
+
+In practice, businesses deal with both structured (invoices, paystubs) and unstructured documents (scans, inconsistent templates).  
+This pipeline helps answer a critical question:
+
+> **When is it better to use a prebuilt model vs a GPT-based parser?**
+
+It’s ideal for:
+- Companies automating document workflows
+- Teams evaluating trade-offs between structure vs flexibility
+- Developers comparing classic vs generative approaches
 
 ---
 
 ## Features
 
-- Invoice parsing using Azure's prebuilt model (`prebuilt-invoice`)
-- Pay stub extraction (optional, `prebuilt-payStub.us`)
-- OCR extraction from scanned or unstructured documents
-- LLM-based parsing and structuring via Azure OpenAI
+- ✅ Invoice parsing via `prebuilt-invoice`
+- ✅ Pay stub parsing (optional via `prebuilt-payStub.us`)
+- ✅ OCR-based layout extraction (Azure `prebuilt-layout`)
+- ✅ GPT-based structured parsing from layout
+- ✅ REST API using FastAPI
+- ✅ Supports both classic and LLM-based document extraction
+
 
 ---
 
@@ -24,7 +43,6 @@ This FastAPI-based backend provides the following REST endpoints:
 |--------------------------|-------------------------------------------------|
 | `GET /health`            | Health check                                   |
 | `POST /extract/invoice`  | Extract structured invoice data                |
-| `POST /extract/paystub`  | Extract data from US pay stubs (optional)      |
 | `POST /extract/ocr-llm`  | Extract via OCR + GPT (free-text instructions) |
 
 ---
@@ -36,7 +54,7 @@ This FastAPI-based backend provides the following REST endpoints:
 │   PDF Upload  │ ───▶ │   OCR      │ ───▶  │ GPT Extraction│
 └───────────────┘       └────────────┘       └───────────────┘
        │                                             ▲
-       └────────────▶ Direct parsing via Document Intelligence (optional)
+       └────────────▶ Direct parsing via Azure prebuilt models 
 ```
 
 ---
@@ -69,7 +87,7 @@ Clone the repo and install dependencies (using uv):
 ```bash
 git clone https://github.com/sophiacodesai/doc-intelligence-pipeline.git
 cd doc-intelligence-pipeline
-uv venv
+uv venv .venv
 source .venv/bin/activate   # On Windows: .venv\Scripts\activate
 uv pip install -r requirements.txt
 ```
@@ -90,13 +108,19 @@ Start the API:
 uvicorn app.main:app --reload
 Open the interactive docs at: http://localhost:8000/docs
 ```
+You can also launch a simple Streamlit frontend via:
+```bash
+streamlit run streamlit_app.py
+```
 
 ---
 
-## Why This Project?
+## Prebuilt vs GPT – When to Use What?
 
-This repository showcases how to bridge traditional document models with GPT-based flexibility, ideal for:
-
-- Automating invoice or payslip parsing
-- Handling OCR-based document flows
-- Comparing rule-based vs. generative approaches
+| Scenario                          | Recommended Approach        |
+|----------------------------------|-----------------------------|
+| Standard invoices/paystubs       | `prebuilt-invoice`, `payStub.us` |
+| Mixed templates or scans         | OCR + GPT                  |
+| Custom document types (e.g. contracts) | OCR + GPT              |
+| Need for speed / low latency     | Prebuilt model             |
+| Need for flexibility / text logic | GPT-based parsing         |
